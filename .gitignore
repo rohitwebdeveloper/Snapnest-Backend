@@ -1,0 +1,45 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# Build output
+dist/
+build/
+
+# Optional npm cache directory
+.npm/
+
+# Coverage directory used by testing tools like jest
+coverage/
+
+# Production files (if any)
+*.tgz
+
+# Local database files (optional)
+*.sqlite
+*.db
+
+# Optional dotenv backup
+.env.backup
+.env.*
+
+# Temporary files
+*.tmp
+*.swp
