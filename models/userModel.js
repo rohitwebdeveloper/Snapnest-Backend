@@ -29,10 +29,6 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isPremium: {
-        type: Boolean,
-        default: false
-    },
     theme: {
         type: String,
         enum: ['light', 'dark'],
