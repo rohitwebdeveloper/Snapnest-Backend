@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const isLoggedIn = require('../middlewares/isLoggedIn')
 const asyncHandler = require('../utils/asyncHandler')
 const {
     signUp,
@@ -16,7 +17,7 @@ router.post('/sign-in', asyncHandler(signIn))
 router.post('/forgot-password', asyncHandler(forgotPassword))
 router.post('/verify-otp', asyncHandler(verifyOTP))
 router.post('/reset-password', asyncHandler(createNewPassword))
-router.post('/delete-account', asyncHandler(deleteAccount))
+router.post('/delete-account', isLoggedIn,  asyncHandler(deleteAccount))
 
 
 module.exports = router;

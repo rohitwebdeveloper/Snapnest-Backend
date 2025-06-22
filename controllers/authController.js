@@ -141,3 +141,16 @@ const deleteAccount = async (req, res) => {
    }
     return res.status(200).json({success:true, message:'Account deleted successfully'})
 }
+
+
+module.exports = {
+    signUp,
+    signIn,
+    forgotPassword,
+    verifyOTP,
+    createNewPassword,
+    deleteAccount,
+}
+
+
+
