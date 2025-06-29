@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
+const Album = require('./albumModel')
+
 
 const photoSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        default: 'Img'
+    },
     category: {
         type: String,
         enum: ['photos', 'documents', 'screenshots'],
@@ -9,10 +15,6 @@ const photoSchema = new mongoose.Schema({
     url: {
         type: String,
         required: true
-    },
-    name: {
-        type: String,
-        default: 'Img'
     },
     description: {
         type: String,

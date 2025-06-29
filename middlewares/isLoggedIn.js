@@ -3,7 +3,7 @@ const userModel = require('../models/userModel');
 
 const isLoggedIn = async (req, res, next) => {
   try {
-    const token = req.cookies.snapnesttoken;
+    const token = req.cookies.snapnestToken;
 
     if (!token) {
       return res.status(401).json({ message: 'You need to login' });

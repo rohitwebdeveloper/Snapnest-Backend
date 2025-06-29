@@ -4,6 +4,8 @@
  require('dotenv').config()
  const errorHandler = require('./middlewares/errorHandler')
  const authRoutes = require('./routes/authRoutes')
+ const photoRoutes = require('./routes/photoRoutes')
+ const albumRoutes = require('./routes/albumRoutes')
 
 // Initialize express 
  const app = express()
@@ -18,6 +20,9 @@
 
 //  Define Routes
  app.use('/api/auth', authRoutes)
+ app.use('/api/photo', photoRoutes)
+ app.use('/api/album', albumRoutes)
+ 
 
 
 //  Global error handler

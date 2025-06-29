@@ -1,12 +1,12 @@
 const cloudinary = require('../config/cloudnaryConfig');
-const streamifier = require('streamifier');
+const streamifier = require('streamifier')
 
 const options = {
     resource_type: 'image',
     folder: 'snapnest',
-    use_filename: true,
-    unique_filename: false,
-    overwrite: true
+    use_filename: false,       
+    unique_filename: true,  
+    overwrite: false
 };
 
 const uploadImgCloudinary = (bufferImg) => {

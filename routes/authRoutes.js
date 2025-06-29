@@ -9,6 +9,7 @@ const {
     verifyOTP,
     createNewPassword,
     deleteAccount,
+    verifyUser,
 } = require('../controllers/authController')
 
 
@@ -18,6 +19,7 @@ router.post('/forgot-password', asyncHandler(forgotPassword))
 router.post('/verify-otp', asyncHandler(verifyOTP))
 router.post('/reset-password', asyncHandler(createNewPassword))
 router.post('/delete-account', isLoggedIn,  asyncHandler(deleteAccount))
+router.get('/me', isLoggedIn,  asyncHandler(verifyUser))
 
 
 module.exports = router;

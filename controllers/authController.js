@@ -3,7 +3,7 @@ const { emailRegex, passwordRegex } = require('../utils/validation')
 const bcrypt = require('bcryptjs')
 const generateToken = require('../utils/generateToken')
 const otpModel = require('../models/otpModel')
-const { response } = require('express')
+
 
 
 const signUp = async (req, res) => {
@@ -27,7 +27,7 @@ const signUp = async (req, res) => {
     })
     await newuser.save()
 
-    const token = generateToken(newuser.email, newuser._id)
+    const token = await generateToken(newuser.email, newuser._id)
     res.cookie('snapnestToken', token, {
         httpOnly: true,
         secure: false,
@@ -35,7 +35,11 @@ const signUp = async (req, res) => {
         maxAge: 86400000
     })
 
-    return res.status(201).json({ success: true, message: 'SignUp sucessful', newuser })
+    const user = newuser.toObject();
+    delete user.password;
+    delete user.isVerified;
+
+    return res.status(201).json({ success: true, message: 'SignUp sucessful', user })
 
 }
 
@@ -59,7 +63,10 @@ const signIn = async (req, res) => {
             sameSite: 'lax',
             maxAge: 86400000
         })
-        return res.status(200).json({ success: true, message: 'LogIn successful' })
+        const userdata = user.toObject();
+        delete userdata.password;
+        delete userdata.isVerified;
+        return res.status(200).json({ success: true, message: 'LogIn successful', userdata })
     }
 }
 
@@ -133,14 +140,19 @@ const createNewPassword = async (req, res) => {
 
 
 const deleteAccount = async (req, res) => {
-    const {email} = req.user;
+    const { email } = req.user;
 
-    const deletedUser = await userModel.deleteOne({email:email}) 
-   if( deletedUser.deletedCount === 0) {
-    return res.status(404).json({success:false, message:'Account not found'})
-   }
-    return res.status(200).json({success:true, message:'Account deleted successfully'})
+    const deletedUser = await userModel.deleteOne({ email: email })
+    if (deletedUser.deletedCount === 0) {
+        return res.status(404).json({ success: false, message: 'Account not found' })
+    }
+    return res.status(200).json({ success: true, message: 'Account deleted successfully' })
 }
+
+
+const verifyUser = async (req, res) => {
+    res.status(200).json({ user: req.user });
+};
 
 
 module.exports = {
@@ -150,6 +162,7 @@ module.exports = {
     verifyOTP,
     createNewPassword,
     deleteAccount,
+    verifyUser
 }
 
 
