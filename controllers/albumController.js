@@ -29,7 +29,7 @@ const getAllAlbums = async (req, res) => {
 
     const albums = await albumModel
         .find({ createdBy: userId })
-        .select('-albumphotos');
+        // .select('-albumphotos');
 
     res.status(200).json({ success: true, albums });
 };

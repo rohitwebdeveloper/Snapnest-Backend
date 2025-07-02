@@ -53,9 +53,71 @@ const addPhotos = async (req, res) => {
 
 
 
+const getSinglePhotoDetails = async (req, res) => {
+  const { photoid } = req.params
+  const { _id } = req.user
+
+  if (!photoid) return res.status(404).json({ message: "No image found" })
+
+  const photo = await photoModel.findOne({ _id: photoid, uploadedBy: _id })
+  if (!photo) return res.status(404).json({ message: "No image found" })
+
+  return res.status(200).json({ success: true, message: 'Image fetched successfully', photo })
+}
+
+
+
+const updatephotodetails = async (req, res) => {
+  const { description, location, photoId } = req.body
+  const { _id } = req.user
+
+  const photo = await photoModel.findOneAndUpdate(
+    { _id: photoId, uploadedBy: _id },
+    { description: description, location: location },
+    { new: true },
+  )
+  if (!photo) {
+    return res.status(404).json({ message: 'Image not found or not authorized' });
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: 'Details updated successfully',
+    photo
+  });
+}
+
+
+
+
+const addScreenshot = async (req, res) => {
+  const { photoId } = req.body;
+  const userId = req.user._id;
+
+  if (!photoId) {
+    return res.status(400).json({ success: false, message: 'Photo ID is required' });
+  }
+
+  const updated = await photoModel.findOneAndUpdate(
+    { _id: photoId, uploadedBy: userId },
+    { category: 'screenshots' },
+    { new: true }
+  );
+
+  if (!updated) {
+    return res.status(404).json({ success: false, message: 'Photo not found or unauthorized' });
+  }
+
+  return res.status(200).json({ success: true, message: 'Added to screenshots'});
+};
+
+
 
 
 module.exports = {
   getPhotos,
   addPhotos,
+  getSinglePhotoDetails,
+  updatephotodetails,
+  addScreenshot,
 }

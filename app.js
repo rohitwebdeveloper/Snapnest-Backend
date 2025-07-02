@@ -6,6 +6,8 @@
  const authRoutes = require('./routes/authRoutes')
  const photoRoutes = require('./routes/photoRoutes')
  const albumRoutes = require('./routes/albumRoutes')
+ const documentRoutes = require('./routes/documentRoutes')
+ 
 
 // Initialize express 
  const app = express()
@@ -22,6 +24,7 @@
  app.use('/api/auth', authRoutes)
  app.use('/api/photo', photoRoutes)
  app.use('/api/album', albumRoutes)
+ app.use('/api/document', documentRoutes)
  
 
 
