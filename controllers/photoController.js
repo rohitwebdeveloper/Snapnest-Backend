@@ -108,8 +108,52 @@ const addScreenshot = async (req, res) => {
     return res.status(404).json({ success: false, message: 'Photo not found or unauthorized' });
   }
 
-  return res.status(200).json({ success: true, message: 'Added to screenshots'});
+  return res.status(200).json({ success: true, message: 'Added to screenshots' });
 };
+
+
+
+const deletePhoto = async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ message: 'Photo id is required' })
+  }
+
+  const deleted = await photoModel.findByIdAndDelete(id);
+  if (!deleted) return res.status(404).json({ success: false, message: 'Photo not found' });
+
+  return res.status(200).json({ success: true, message: 'Photo deleted' });
+};
+
+
+
+
+const addToFavourite = async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ message: 'Photo id is required' })
+  }
+  const updated = await photoModel.findByIdAndUpdate(id, { isFavourite: true }, { new: true });
+  if (!updated) return res.status(404).json({ success: false, message: 'Photo not found' });
+
+  return res.status(200).json({ success: true, message: 'Added to favourites', photo: updated });
+};
+
+
+
+
+const removeFromFavourite = async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ message: 'Photo id is required' })
+  }
+  const updated = await photoModel.findByIdAndUpdate(id, { isFavourite: false }, { new: true });
+  if (!updated) return res.status(404).json({ success: false, message: 'Photo not found' });
+
+  return res.status(200).json({ success: true, message: 'Removed from favourites', photo: updated });
+
+};
+
 
 
 
@@ -120,4 +164,7 @@ module.exports = {
   getSinglePhotoDetails,
   updatephotodetails,
   addScreenshot,
+  deletePhoto,
+  addToFavourite,
+  removeFromFavourite,
 }
