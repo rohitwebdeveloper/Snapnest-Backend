@@ -4,6 +4,7 @@ const { deleteOne } = require('../models/userModel');
 const addDocument = async (req, res) => {
   const { photoId, category } = req.body;
   const userId = req.user._id; 
+  console.log('PhotoId:', photoId)
 
   if (!photoId || !category) {
     return res.status(400).json({ success: false, message: 'Photo ID and category are required' });

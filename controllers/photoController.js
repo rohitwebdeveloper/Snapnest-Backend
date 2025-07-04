@@ -156,6 +156,37 @@ const removeFromFavourite = async (req, res) => {
 
 
 
+const getAllFavourites = async (req, res) => {
+  const userId = req.user._id; 
+
+  const favourites = await photoModel.find({ uploadedBy: userId, isFavourite: true });
+
+  return res.status(200).json({
+    success: true,
+    message:
+      favourites.length === 0 ? 'No favourites found' : 'Favourites fetched successfully',
+    favourites,
+  });
+};
+
+
+
+const getAllScreenshot = async (req, res) => {
+  const userId = req.user._id;
+
+  const screenshots = await photoModel.find({
+    uploadedBy: userId,
+    category: 'screenshots'
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: 'Screenshots fetched successfully',
+    screenshots, // changed variable name for clarity
+  });
+};
+
+
 
 
 module.exports = {
@@ -167,4 +198,6 @@ module.exports = {
   deletePhoto,
   addToFavourite,
   removeFromFavourite,
+  getAllFavourites,
+  getAllScreenshot
 }

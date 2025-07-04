@@ -10,6 +10,7 @@ const DOCUMENT_CATEGORIES = [
   'Projects',
   'Legal'
 ];
+const Photo = require('../models/photoModel')
 
 const documentSchema = new mongoose.Schema(
   {

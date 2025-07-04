@@ -58,9 +58,9 @@ const addPhotoToAlbum = async (req, res) => {
 
 const getPhotosByAlbum = async (req, res) => {
     const { _id } = req.user
-    const { albumId } = req.params
+    const { id } = req.params
 
-    const photos = await photoModel.find({ uploadedBy: _id, album: albumId })
+    const photos = await photoModel.find({ uploadedBy: _id, album: id })
     return res.status(200).json({ success: true, photos })
 }
 
