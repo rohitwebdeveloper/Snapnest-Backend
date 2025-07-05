@@ -12,8 +12,11 @@ const { getPhotos,
     addToFavourite,
     removeFromFavourite,
     getAllFavourites,
-    getAllScreenshot, } = require('../controllers/photoController')
+    getAllScreenshot,
+    getPhotosGroupedByLocation, } = require('../controllers/photoController')
 
+
+router.get('/places', isLoggedIn, asyncHandler(getPhotosGroupedByLocation));
 
 router.post('/upload', isLoggedIn, upload.single('photo'), asyncHandler(addPhotos))
 
@@ -34,5 +37,6 @@ router.patch('/:id/favourite', isLoggedIn, asyncHandler(addToFavourite));
 router.patch('/:id/unfavourite', isLoggedIn, asyncHandler(removeFromFavourite));
 
 router.get('/favourite/all', isLoggedIn, asyncHandler(getAllFavourites));
+
 
 module.exports = router

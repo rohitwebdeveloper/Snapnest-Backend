@@ -157,7 +157,7 @@ const removeFromFavourite = async (req, res) => {
 
 
 const getAllFavourites = async (req, res) => {
-  const userId = req.user._id; 
+  const userId = req.user._id;
 
   const favourites = await photoModel.find({ uploadedBy: userId, isFavourite: true });
 
@@ -188,6 +188,30 @@ const getAllScreenshot = async (req, res) => {
 
 
 
+const getPhotosGroupedByLocation = async (req, res) => {
+
+  const userId = req.user._id
+
+  const groupedPhotos = await photoModel.aggregate([
+    { $match: { uploadedBy: userId, location: { $ne: '' } } },
+    {
+      $group: {
+        _id: '$location',
+        photos: { $push: '$$ROOT' }
+      }
+    },
+    { $sort: { _id: 1 } }
+  ])
+
+  return res.status(200).json({
+    success: true,
+    message: 'Photos grouped by location',
+    groupedPhotos
+  });
+}
+
+
+
 
 module.exports = {
   getPhotos,
@@ -199,5 +223,6 @@ module.exports = {
   addToFavourite,
   removeFromFavourite,
   getAllFavourites,
-  getAllScreenshot
+  getAllScreenshot,
+  getPhotosGroupedByLocation,
 }
