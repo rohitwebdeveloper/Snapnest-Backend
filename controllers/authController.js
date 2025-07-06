@@ -117,16 +117,16 @@ const verifyOTP = async (req, res) => {
 
 const createNewPassword = async (req, res) => {
 
-    const { email, confirmPassword } = req.body;
-    if (!confirmPassword) {
+    const { email, confirmpassword } = req.body;
+    if (!confirmpassword) {
         return res.status(401).json({ message: "Password is required" });
     }
 
-    if (!passwordRegex.test(confirmPassword)) {
+    if (!passwordRegex.test(confirmpassword)) {
         return res.status(400).json({ message: 'Weak Password' })
     }
     const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(confirmPassword, salt)
+    const hashedPassword = await bcrypt.hash(confirmpassword, salt)
     const updatedUser = await userModel.findOneAndUpdate(
         { email: email },
         { password: hashedPassword },
@@ -146,6 +146,11 @@ const deleteAccount = async (req, res) => {
     if (deletedUser.deletedCount === 0) {
         return res.status(404).json({ success: false, message: 'Account not found' })
     }
+    res.clearCookie('snapnestToken', {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax',
+    })
     return res.status(200).json({ success: true, message: 'Account deleted successfully' })
 }
 
@@ -155,6 +160,21 @@ const verifyUser = async (req, res) => {
 };
 
 
+
+const logOut = async (req, res) => {
+    res.clearCookie('snapnestToken', {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax',
+    })
+
+    return res.status(200).json({
+        success: true,
+        message: 'Logged out successfully',
+    })
+}
+
+
 module.exports = {
     signUp,
     signIn,
@@ -162,7 +182,8 @@ module.exports = {
     verifyOTP,
     createNewPassword,
     deleteAccount,
-    verifyUser
+    verifyUser,
+    logOut
 }
 
 

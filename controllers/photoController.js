@@ -1,7 +1,10 @@
 
 const photoModel = require('../models/photoModel')
-const uploadImgCloudinary = require('../services/uploadCloudinary')
+const { uploadImgCloudinary, deleteImageFromCloudinary } = require('../services/cloudinary')
 const sharp = require('sharp')
+const getPublicIdFromUrl = require('../utils/getPublicId')
+const albumModel = require('../models/albumModel')
+const documentModel = require('../models/documentModel')
 
 
 const getPhotos = async (req, res) => {
@@ -115,12 +118,32 @@ const addScreenshot = async (req, res) => {
 
 const deletePhoto = async (req, res) => {
   const { id } = req.params;
-  if (!id) {
-    return res.status(400).json({ message: 'Photo id is required' })
+
+  if (!id) return res.status(400).json({ message: 'Photo id is required' })
+
+  const photo = await photoModel.findOne({ _id: id });
+  if (!photo) return res.status(404).json({ message: 'Photo not found' });
+
+  const publicId = await getPublicIdFromUrl(photo.url)
+
+  if (publicId) {
+    const cloudresult = await deleteImageFromCloudinary(publicId)
+
+    if (cloudresult.result !== 'ok') {
+      return res.status(500).json({ message: 'Failed to delete Photo' });
+    }
   }
 
-  const deleted = await photoModel.findByIdAndDelete(id);
-  if (!deleted) return res.status(404).json({ success: false, message: 'Photo not found' });
+  // remove photo reference in albums
+  await albumModel.updateMany(
+    { albumphotos: id },
+    { $pull: { albumphotos: id } }
+  )
+
+  // remove photo reference in documents
+  await documentModel.deleteMany({ photo: id })
+
+  await photoModel.findByIdAndDelete(id);
 
   return res.status(200).json({ success: true, message: 'Photo deleted' });
 };

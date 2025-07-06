@@ -4,10 +4,11 @@ const streamifier = require('streamifier')
 const options = {
     resource_type: 'image',
     folder: 'snapnest',
-    use_filename: false,       
-    unique_filename: true,  
+    use_filename: false,
+    unique_filename: true,
     overwrite: false
 };
+
 
 const uploadImgCloudinary = (bufferImg) => {
     return new Promise((resolve, reject) => {
@@ -19,4 +20,24 @@ const uploadImgCloudinary = (bufferImg) => {
     });
 };
 
-module.exports = uploadImgCloudinary;
+
+
+
+const deleteImageFromCloudinary = async (publicId) => {
+    try {
+        const result = await cloudinary.uploader.destroy(publicId)
+        // console.log('Cloudinary delete result:', result);
+        return result
+    } catch (error) {
+        console.error(error)
+        throw new Error('Failed to delete photo')
+    }
+}
+
+
+
+
+module.exports = {
+    uploadImgCloudinary,
+    deleteImageFromCloudinary,
+}
