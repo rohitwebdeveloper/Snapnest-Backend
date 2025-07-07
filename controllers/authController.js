@@ -3,6 +3,7 @@ const { emailRegex, passwordRegex } = require('../utils/validation')
 const bcrypt = require('bcryptjs')
 const generateToken = require('../utils/generateToken')
 const otpModel = require('../models/otpModel')
+const sendMailToUser = require('../services/sendMail')
 
 
 
@@ -89,9 +90,8 @@ const forgotPassword = async (req, res) => {
         return res.status(500).json({ success: false, message: 'Failed to send otp' })
     }
 
-    //   await send mail
+    await sendMailToUser(user.email, otp)
     return res.status(200).json({ success: true, message: 'OTP has been sent ' })
-
 }
 
 
@@ -104,10 +104,11 @@ const verifyOTP = async (req, res) => {
     }
 
     const sentOtp = await otpModel.findOne({ email: email })
+    console.log('sentOtp:', sentOtp)
     if (!sentOtp) {
         return res.status(404).json({ message: 'OTP has been expired' })
     }
-    if (sentOtp === otp) {
+    if (sentOtp.otp === otp) {
         return res.status(200).json({ sucess: true, message: 'OTP Verifed Successfully' })
     } else {
         return res.status(401).json({ sucess: false, message: 'Invalid OTP' })

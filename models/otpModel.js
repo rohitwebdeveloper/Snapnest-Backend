@@ -7,13 +7,13 @@ const otpSchema = new mongoose.Schema({
         unique: true
     },
     otp: {
-        type: Number,
+        type: String,
         required: true,
     },
     createdAt: {
         type: Date,
         default: Date.now,
-        expires: 120
+        expires: 120,
     }
 })
 
