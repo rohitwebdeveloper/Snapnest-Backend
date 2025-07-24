@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Album = require('./albumModel')
+const Album = require('./albumModel');
+const { schema } = require('./userModel');
 
 
 const photoSchema = new mongoose.Schema({
@@ -55,5 +56,7 @@ const photoSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+// photoSchema.index({name:'text', description:'text', category:'text'})
 
 module.exports = mongoose.model('Photo', photoSchema);

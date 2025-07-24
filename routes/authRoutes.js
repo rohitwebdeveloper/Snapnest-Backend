@@ -10,7 +10,8 @@ const {
     createNewPassword,
     deleteAccount,
     verifyUser,
-    logOut
+    logOut,
+    googleSignIn,
 } = require('../controllers/authController')
 
 
@@ -22,6 +23,8 @@ router.post('/reset-password', asyncHandler(createNewPassword))
 router.post('/delete-account', isLoggedIn,  asyncHandler(deleteAccount))
 router.get('/me', isLoggedIn,  asyncHandler(verifyUser))
 router.post('/logout', isLoggedIn,  asyncHandler(logOut))
+router.post('/google/sign-in', asyncHandler(googleSignIn))
+
 
 
 module.exports = router;

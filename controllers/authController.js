@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs')
 const generateToken = require('../utils/generateToken')
 const otpModel = require('../models/otpModel')
 const sendMailToUser = require('../services/sendMail')
+const { jwtDecode } = require('jwt-decode')
 
 
 
@@ -176,6 +177,35 @@ const logOut = async (req, res) => {
 }
 
 
+
+const googleSignIn = async (req, res) => {
+    const { credential } = req.body.credRes
+    const decoded = await jwtDecode(credential)
+
+    const user = await userModel.findOne({ email: decoded.email });
+    if (!user) {
+        return res.status(401).json({ success: false, message: 'Account does not exist' });
+    }
+
+    const token = await generateToken(user.email, user._id);
+
+    res.cookie('snapnestToken', token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax',
+        maxAge: 86400000, // 1 day
+    });
+
+    const userdata = user.toObject();
+    delete userdata.password;
+    delete userdata.isVerified;
+
+    return res.status(200).json({ success: true, message: 'Login successful', userdata });
+};
+
+
+
+
 module.exports = {
     signUp,
     signIn,
@@ -184,7 +214,8 @@ module.exports = {
     createNewPassword,
     deleteAccount,
     verifyUser,
-    logOut
+    logOut,
+    googleSignIn
 }
 
 

@@ -7,15 +7,29 @@ const albumModel = require('../models/albumModel')
 const documentModel = require('../models/documentModel')
 
 
+
 const getPhotos = async (req, res) => {
   const { _id } = req.user;
+  const page = parseInt(req.query.page) || 1
+  const limit = parseInt(req.query.limit) || 3
 
-  const allPhotos = await photoModel
+  const skip = (page - 1) * limit;
+
+  const photos = await photoModel
     .find({ uploadedBy: _id })
     .populate('album')
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
 
-  return res.status(200).json(allPhotos);
+  const totalPhotos = await photoModel.countDocuments({ uploadedBy: _id });
+
+  const hasMore = page * limit < totalPhotos;
+
+  return res.status(200).json({
+    photos,
+    hasMore,
+  });
 
 }
 
@@ -235,6 +249,27 @@ const getPhotosGroupedByLocation = async (req, res) => {
 
 
 
+const getPhotoBySearch = async (req, res) => {
+  const searchval = req.query.searchquery?.trim().toLowerCase().replace(/\s+/g, '');
+
+  if (!searchval) return res.status(400).json({ success: false, message: "Search query required" });
+
+  const regexPattern = new RegExp(searchval.split('').join('.*'), 'i');
+
+  const query = {
+    $or: [
+      { name: { $regex: regexPattern } },
+      { description: { $regex: regexPattern } },
+      { category: { $regex: regexPattern } }
+    ]
+  };
+
+  const searchresult = await photoModel.find(query);
+  return res.status(200).json({ success: true, searchresult });
+};
+
+
+
 
 module.exports = {
   getPhotos,
@@ -248,4 +283,5 @@ module.exports = {
   getAllFavourites,
   getAllScreenshot,
   getPhotosGroupedByLocation,
+  getPhotoBySearch
 }
