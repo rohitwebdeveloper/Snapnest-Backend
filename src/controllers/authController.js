@@ -32,8 +32,8 @@ const signUp = async (req, res) => {
     const token = await generateToken(newuser.email, newuser._id)
     res.cookie('snapnestToken', token, {
         httpOnly: true,
-        secure: false,
-        sameSite: 'lax',
+        secure: true,
+        sameSite: 'none',
         maxAge: 86400000
     })
 
@@ -61,8 +61,8 @@ const signIn = async (req, res) => {
         let token = await generateToken(user.email, user._id)
         res.cookie('snapnestToken', token, {
             httpOnly: true,
-            secure: false,
-            sameSite: 'lax',
+            secure: true,
+            sameSite: 'none',
             maxAge: 86400000
         })
         const userdata = user.toObject();
@@ -150,8 +150,8 @@ const deleteAccount = async (req, res) => {
     }
     res.clearCookie('snapnestToken', {
         httpOnly: true,
-        secure: false,
-        sameSite: 'lax',
+        secure: true,
+        sameSite: 'none',
     })
     return res.status(200).json({ success: true, message: 'Account deleted successfully' })
 }
@@ -166,8 +166,8 @@ const verifyUser = async (req, res) => {
 const logOut = async (req, res) => {
     res.clearCookie('snapnestToken', {
         httpOnly: true,
-        secure: false,
-        sameSite: 'lax',
+        secure: true,
+        sameSite: 'none',
     })
 
     return res.status(200).json({
@@ -191,8 +191,8 @@ const googleSignIn = async (req, res) => {
 
     res.cookie('snapnestToken', token, {
         httpOnly: true,
-        secure: false,
-        sameSite: 'lax',
+        secure: true,
+        sameSite: 'none',
         maxAge: 86400000, // 1 day
     });
 
