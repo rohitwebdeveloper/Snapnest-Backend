@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const User = require('./userModel')
 
 const albumSchema = new mongoose.Schema({
     albumname: {
