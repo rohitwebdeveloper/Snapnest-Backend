@@ -25,22 +25,21 @@ router.get('/all', isLoggedIn, asyncHandler(getPhotos))
 
 router.get('/search', isLoggedIn, asyncHandler(getPhotoBySearch));
 
-router.get('/:photoid', isLoggedIn, asyncHandler(getSinglePhotoDetails))
-
 router.put('/update-detail', isLoggedIn, asyncHandler(updatephotodetails))
 
 router.put('/add-screenshot', isLoggedIn, asyncHandler(addScreenshot));
 
 router.get('/screenshot/all', isLoggedIn, asyncHandler(getAllScreenshot))
 
-router.delete('/delete/:id', isLoggedIn, asyncHandler(deletePhoto));
+router.get('/favourite/all', isLoggedIn, asyncHandler(getAllFavourites));
 
 router.patch('/:id/favourite', isLoggedIn, asyncHandler(addToFavourite));
 
 router.patch('/:id/unfavourite', isLoggedIn, asyncHandler(removeFromFavourite));
 
-router.get('/favourite/all', isLoggedIn, asyncHandler(getAllFavourites));
+router.get('/:photoid', isLoggedIn, asyncHandler(getSinglePhotoDetails))
 
+router.delete('/delete/:id', isLoggedIn, asyncHandler(deletePhoto));
 
 
 module.exports = router
