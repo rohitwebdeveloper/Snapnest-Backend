@@ -19,27 +19,27 @@ const { getPhotos,
 
 router.get('/places', isLoggedIn, asyncHandler(getPhotosGroupedByLocation));
 
-router.post('/upload', isLoggedIn, upload.single('photo'), asyncHandler(addPhotos))
-
-router.get('/all', isLoggedIn, asyncHandler(getPhotos))
-
 router.get('/search', isLoggedIn, asyncHandler(getPhotoBySearch));
 
-router.put('/update-detail', isLoggedIn, asyncHandler(updatephotodetails))
-
-router.put('/add-screenshot', isLoggedIn, asyncHandler(addScreenshot));
+router.get('/all', isLoggedIn, asyncHandler(getPhotos))
 
 router.get('/screenshot/all', isLoggedIn, asyncHandler(getAllScreenshot))
 
 router.get('/favourite/all', isLoggedIn, asyncHandler(getAllFavourites));
 
-router.patch('/:id/favourite', isLoggedIn, asyncHandler(addToFavourite));
+router.post('/upload', isLoggedIn, upload.single('photo'), asyncHandler(addPhotos))
 
-router.patch('/:id/unfavourite', isLoggedIn, asyncHandler(removeFromFavourite));
+router.put('/update-detail', isLoggedIn, asyncHandler(updatephotodetails))
+
+router.put('/add-screenshot', isLoggedIn, asyncHandler(addScreenshot));
 
 router.get('/:photoid', isLoggedIn, asyncHandler(getSinglePhotoDetails))
 
 router.delete('/delete/:id', isLoggedIn, asyncHandler(deletePhoto));
+
+router.patch('/:id/favourite', isLoggedIn, asyncHandler(addToFavourite));
+
+router.patch('/:id/unfavourite', isLoggedIn, asyncHandler(removeFromFavourite));
 
 
 module.exports = router
