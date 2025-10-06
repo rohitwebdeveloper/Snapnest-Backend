@@ -16,17 +16,10 @@ const userRoutes = require('./routes/userRoutes')
 // Initialize express 
 const app = express()
 
-// app.set('trust proxy', 1)
-
 app.use(cors({
   origin: process.env.CLIENT_URL,
   credentials: true,
 }))
-
-// app.options('*', cors({
-//   origin: process.env.CLIENT_URL,
-//   credentials: true,
-// }))
 
 // Security middlewares
 app.use(helmet())
@@ -55,11 +48,11 @@ app.use(cookieParser())
 
 
 //  Define Routes
-// app.use('/api/auth', authRoutes)
-// app.use('/api/photo', photoRoutes)
-// app.use('/api/album', albumRoutes)
-// app.use('/api/document', documentRoutes)
-// app.use('/api/user', userRoutes)
+app.use('/api/auth', authRoutes)
+app.use('/api/photo', photoRoutes)
+app.use('/api/album', albumRoutes)
+app.use('/api/document', documentRoutes)
+app.use('/api/user', userRoutes)
 
 
 
