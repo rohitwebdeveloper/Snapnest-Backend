@@ -16,6 +16,17 @@ const userRoutes = require('./routes/userRoutes')
 // Initialize express 
 const app = express()
 
+app.set('trust proxy', 1)
+
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+}))
+
+app.options('*', cors({
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+}))
 
 // Security middlewares
 app.use(helmet())
@@ -27,6 +38,8 @@ const limiter = rateLimit({
     windowMs: 600000,
     max: 100,
     message: "Too many requests from your side, please try again later",
+    standardHeaders: true,
+    legacyHeaders: false,
 })
 app.use(limiter)
 
@@ -37,7 +50,7 @@ app.use(compression())
 //  Middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }))
+//app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }))
 app.use(cookieParser())
 
 
