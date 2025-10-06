@@ -34,14 +34,14 @@ app.use(hpp())
 
 
 // Rate Limiter to limit the request by user
-const limiter = rateLimit({
-    windowMs: 600000,
-    max: 100,
-    message: "Too many requests from your side, please try again later",
-    standardHeaders: true,
-    legacyHeaders: false,
-})
-app.use(limiter)
+// const limiter = rateLimit({
+//    windowMs: 600000,
+//     max: 100,
+//     message: "Too many requests from your side, please try again later",
+//     standardHeaders: true,
+//     legacyHeaders: false,
+// })
+// app.use(limiter)
 
 // Compress data sent on request
 app.use(compression())
