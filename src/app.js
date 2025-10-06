@@ -55,11 +55,11 @@ app.use(cookieParser())
 
 
 //  Define Routes
-app.use('/api/auth', authRoutes)
-app.use('/api/photo', photoRoutes)
-app.use('/api/album', albumRoutes)
-app.use('/api/document', documentRoutes)
-app.use('/api/user', userRoutes)
+// app.use('/api/auth', authRoutes)
+// app.use('/api/photo', photoRoutes)
+// app.use('/api/album', albumRoutes)
+// app.use('/api/document', documentRoutes)
+// app.use('/api/user', userRoutes)
 
 
 
